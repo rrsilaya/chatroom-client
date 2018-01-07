@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import { withStyles } from 'material-ui/styles';
+import { Link } from 'react-router-dom';
 
 import Drawer from 'material-ui/Drawer';
 import List, { ListItem, ListItemText } from 'material-ui/List';
@@ -29,7 +30,6 @@ class Sidebar extends Component {
         rooms: res.data.data,
         isGettingRooms: false
       });
-      console.log(res.data.data)
     });
   }
 
@@ -63,11 +63,19 @@ class Sidebar extends Component {
               </div>
               :
               this.state.rooms.map(room => (
-                <ListItem button key={room._id}>
+                <ListItem button key={room._id} component={Link} to={'/' + room._id}>
                   <Avatar style={{ backgroundColor: room.color }}>
                     {room.name.substr(0, 2).toUpperCase()}
                   </Avatar>
-                  <ListItemText primary={room.name} secondary={room.updated} />
+                  <ListItemText
+                    primary={room.name}
+                    secondary={new Date(room.updated).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  />
                 </ListItem>
               ))
             }
